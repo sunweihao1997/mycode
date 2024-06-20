@@ -23,7 +23,7 @@ begin
     u&level = level
     wscale&level=level
 
-    wks    = gsn_open_wks("png", "stream")
+    wks    = gsn_open_wks("png", "stream_meridional")
     res                   = True                   ; plot mods desired
 
     res@tiMainString      = "Pressure/Height Streamline" ; title

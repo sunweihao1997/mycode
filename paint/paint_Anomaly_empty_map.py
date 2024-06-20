@@ -70,53 +70,59 @@ def set_cartopy_tick(ax, extent, xticks, yticks, nx=0, ny=0,
 def paint_picture(lon, lat, u, v, psl):
     # 绘制图像
     proj    =  ccrs.PlateCarree()
-    fig,ax   =  plt.subplots(figsize=(13,10),subplot_kw=dict(projection=ccrs.PlateCarree()))
+    fig,ax   =  plt.subplots(figsize=(25,12.5),subplot_kw=dict(projection=ccrs.PlateCarree()))
 
 
 
     # 范围设置
-    lonmin,lonmax,latmin,latmax  =  45,150,-10,30
+    lonmin,lonmax,latmin,latmax  =  30,150,-15,30
     extent     =  [lonmin,lonmax,latmin,latmax]
 
     # 刻度设置
-    set_cartopy_tick(ax=ax,extent=extent,xticks=np.linspace(50,110,4,dtype=int),yticks=np.linspace(-10,30,5,dtype=int),nx=1,ny=1,labelsize=19)
+    set_cartopy_tick(ax=ax,extent=extent,xticks=np.linspace(30,150,7,dtype=int),yticks=np.linspace(-15,30,4,dtype=int),nx=1,ny=1,labelsize=19)
     
     # 绘制赤道线
-    ax.plot([40,120],[0,0],'--',color='k')
+    #ax.plot([40,120],[0,0],'--',color='k')
 
     # 绘制海岸线
-    ax.coastlines(resolution='110m',lw=1.5)
+    ax.coastlines(resolution='110m',lw=3)
 
-    im  =  ax.contourf(lon,lat,psl,np.linspace(-100,100,11),cmap='coolwarm',alpha=1,extend='both')
+    # Add land with green color
+    ax.add_feature(cfeature.LAND, facecolor='gainsboro')
 
+    # Add ocean with blue color
+    ax.add_feature(cfeature.OCEAN, facecolor='lightskyblue')
 
-    # 绘制矢量图
-    q  =  ax.quiver(lon, lat, u, v, 
-                regrid_shape=15, angles='uv',   # regrid_shape这个参数越小，是两门就越稀疏
-                scale_units='xy', scale=0.35,        # scale是参考矢量，所以取得越大画出来的箭头就越短
-                units='xy', width=0.3,
-                transform=proj,
-                color='k',linewidth=1.2,headlength = 5, headaxislength = 4, headwidth = 5)
-    
-    # 加序号
-    #plv3_2a.add_text(ax=ax,string="(b)",fontsize=27.5,location=(0.015,0.91))
-
-    # 加矢量图图例
-    add_vector_legend(ax=ax,q=q, speed=1)
-
-    fig.subplots_adjust(top=0.8) 
-    cbar_ax = fig.add_axes([0.2, 0.05, 0.6, 0.03]) 
-    cb  =  fig.colorbar(im, cax=cbar_ax, shrink=0.1, pad=0.01, orientation='horizontal')
-    cb.ax.tick_params(labelsize=20)
+#    im  =  ax.contourf(lon,lat,psl,np.linspace(-30,30,7),cmap='coolwarm',alpha=1,extend='both')
+#
+#
+#    # 绘制矢量图
+#    q  =  ax.quiver(lon, lat, u, v, 
+#                regrid_shape=9, angles='uv',   # regrid_shape这个参数越小，是两门就越稀疏
+#                scale_units='xy', scale=0.75,        # scale是参考矢量，所以取得越大画出来的箭头就越短
+#                units='xy', width=0.4,
+#                transform=proj,
+#                color='k',linewidth=1.2,headlength = 5, headaxislength = 4, headwidth = 5)
+#    
+#    # 加序号
+#    #plv3_2a.add_text(ax=ax,string="(b)",fontsize=27.5,location=(0.015,0.91))
+#
+#    # 加矢量图图例
+#    add_vector_legend(ax=ax,q=q, speed=1)
+#
+#    fig.subplots_adjust(top=0.8) 
+#    cbar_ax = fig.add_axes([0.2, 0.05, 0.6, 0.03]) 
+#    cb  =  fig.colorbar(im, cax=cbar_ax, shrink=0.1, pad=0.01, orientation='horizontal')
+#    cb.ax.tick_params(labelsize=20)
 
     # 保存图片
-    save_fig(path_out="/home/sun/paint/monthly_variable/regression/",file_out="April_10m_uv_to_OLR_index.pdf")
+    save_fig(path_out="/home/sun/paint/monthly_variable/regression/",file_out="emptymap.png")
 
 def main():
-    f1 = xr.open_dataset('/home/sun/data/monsoon_onset_anomaly_analysis/ERA5_data_monsoon_onset/regression/ERA5_regression_10uv_psl_to_LSTC.nc')
+    f1 = xr.open_dataset('/home/sun/data/monsoon_onset_anomaly_analysis/ERA5_data_monsoon_onset/regression/ERA5_regression_200_uvz_500_w_to_OLR.nc')
     #print(f1)
 
-    paint_picture(lon=f1.longitude,lat=f1.latitude,u=f1['rc_u'].data*-1, v=f1['rc_v'].data*-1, psl=f1['rc_p'].data*-1)
+    paint_picture(lon=f1.lon,lat=f1.lat,u=f1['rc_u'].data*1, v=f1['rc_v'].data*1, psl=f1['rc_w'].data*1000)
 
 
 

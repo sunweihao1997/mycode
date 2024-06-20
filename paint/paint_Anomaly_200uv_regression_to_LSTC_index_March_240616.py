@@ -93,7 +93,7 @@ def paint_picture(lon, lat, u, v, psl):
     # 绘制矢量图
     q  =  ax.quiver(lon, lat, u, v, 
                 regrid_shape=15, angles='uv',   # regrid_shape这个参数越小，是两门就越稀疏
-                scale_units='xy', scale=0.35,        # scale是参考矢量，所以取得越大画出来的箭头就越短
+                scale_units='xy', scale=0.5,        # scale是参考矢量，所以取得越大画出来的箭头就越短
                 units='xy', width=0.3,
                 transform=proj,
                 color='k',linewidth=1.2,headlength = 5, headaxislength = 4, headwidth = 5)
@@ -110,13 +110,13 @@ def paint_picture(lon, lat, u, v, psl):
     cb.ax.tick_params(labelsize=20)
 
     # 保存图片
-    save_fig(path_out="/home/sun/paint/monthly_variable/regression/",file_out="April_10m_uv_to_OLR_index.pdf")
+    save_fig(path_out="/home/sun/paint/monthly_variable/regression/",file_out="March_200_uv_500w_to_LSTC_index.pdf")
 
 def main():
-    f1 = xr.open_dataset('/home/sun/data/monsoon_onset_anomaly_analysis/ERA5_data_monsoon_onset/regression/ERA5_regression_10uv_psl_to_LSTC.nc')
+    f1 = xr.open_dataset('/home/sun/data/monsoon_onset_anomaly_analysis/ERA5_data_monsoon_onset/regression/ERA5_regression_200_uvz_500_w_to_LSTC.nc')
     #print(f1)
 
-    paint_picture(lon=f1.longitude,lat=f1.latitude,u=f1['rc_u'].data*-1, v=f1['rc_v'].data*-1, psl=f1['rc_p'].data*-1)
+    paint_picture(lon=f1.lon,lat=f1.lat,u=f1['rc_u'].data*-1, v=f1['rc_v'].data*-1, psl=f1['rc_w'].data*-1000)
 
 
 

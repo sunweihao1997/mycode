@@ -2,7 +2,7 @@
 ;This function is to plot the zonal circulation of the regressioned circulation to the OLR index
 ;use ncl other than py is due to the level axis is always wrong
 begin
-    f0 = addfile("/home/sun/data/ERA5_data_monsoon_onset/regression/ERA5_regression_OLR-remove-SLP_zonal_tropical_circulation.nc", "r")
+    f0 = addfile("/home/sun/data/monsoon_onset_anomaly_analysis/ERA5_data_monsoon_onset/regression/ERA5_regression_OLR-remove-SLP_zonal_tropical_circulation.nc", "r")
 
     u  = f0->rc_u
     w  = f0->rc_w
@@ -23,11 +23,11 @@ begin
     u&level = level
     wscale&level=level
 
-    wks    = gsn_open_wks("png", "stream")
+    wks    = gsn_open_wks("pdf", "/home/sun/paint/monthly_variable/regression/zonal_stream")
     res                   = True                   ; plot mods desired
 
-    res@tiMainString      = "Pressure/Height Streamline" ; title
-    res@gsnCenterString   = "At 170E"
+    ;res@tiMainString      = "Pressure/Height Streamline" ; title
+    res@gsnCenterString   = "March zonal circulation regression to OLR index"
    
     res@cnFillOn          = True                ; turn on color fill
     res@cnFillPalette     = "BlAqGrYeOrReVi200" ; choose color map

@@ -1,5 +1,6 @@
 ;;;2024-4-5
-;;;This script calculate the regression of wind to the OLR
+;;;This script calculate the regression of wind to the LSTC (OLR removed)
+;;; Spatial circulation 200 hPa
 begin
     ; ================ Data processing1: abnormal, detrend, calculate monthly mean =======================
     ; Wind data
@@ -11,9 +12,9 @@ begin
     f1 = addfile("/home/sun/data/ERA5_data_monsoon_onset/regression/regression_uv_to_OLR_to_LSTC_remove_each_other_FMA_avg.nc", "r")
 
     ; Read data
-    u  = fu->u(:, :, :, {80:100})
-    v  = fv->v(:, :, :, {80:100})
-    w  = fw->w(:, :, :, {80:100})
+    u  = fu->u(:, {850}, :, :)
+    v  = fv->v(:, {850}, :, :)
+    w  = fw->w(:, {850}, :, :)
 
     olr = f1->lstc_remove_olr
 
@@ -87,9 +88,9 @@ begin
 ;    ;printVarSummary(u_detrend)
 ;    ;printVarSummary(lstc_detrend_april)
 ;    printVarSummary(u_detrend_)
-    rc_u = regCoef_n(olr_detrend*-1, dim_avg_n_Wrap(u_detrend_, 3), 0, 0)  
-    rc_v = regCoef_n(olr_detrend*-1, dim_avg_n_Wrap(v_detrend_, 3), 0, 0)  
-    rc_w = regCoef_n(olr_detrend*-1, dim_avg_n_Wrap(w_detrend_, 3), 0, 0)  
+    rc_u = regCoef_n(olr_detrend*-1, u_detrend_, 0, 0)  
+    rc_v = regCoef_n(olr_detrend*-1, v_detrend_, 0, 0)  
+    rc_w = regCoef_n(olr_detrend*-1, w_detrend_, 0, 0)  
     ;printVarSummary(rc_u)
 
     ;printVarSummary(u_detrend_)
@@ -97,9 +98,10 @@ begin
 ;    printVarSummary(rc_u)
 
     ; ================ Write to the nc file ==========================================
-    copy_VarCoords(u(0, :, :, {80}), rc_u)
-    copy_VarCoords(v(0, :, :, {80}), rc_v)
-    copy_VarCoords(w(0, :, :, {80}), rc_w)
+
+    copy_VarCoords(u(0, :, :), rc_u)
+    copy_VarCoords(v(0, :, :), rc_v)
+    copy_VarCoords(w(0, :, :), rc_w)
 
     ;printVarSummary(u(0, :, :, {80}))
 
@@ -119,8 +121,8 @@ begin
 
 ;    printMinMax(lstc_detrend, 0)
 ;    printMinMax(rc_u, 0)
-    system("rm /home/sun/data/ERA5_data_monsoon_onset/regression/ERA5_regression_LSTC-remove-OLR_meridional_tropical_circulation.nc")
-    fout = addfile("/home/sun/data/ERA5_data_monsoon_onset/regression/ERA5_regression_LSTC-remove-OLR_meridional_tropical_circulation.nc", "c")
+    system("rm /home/sun/data/ERA5_data_monsoon_onset/regression/ERA5_regression_LSTC-remove-OLR_850_spatial_circulation.nc")
+    fout = addfile("/home/sun/data/ERA5_data_monsoon_onset/regression/ERA5_regression_LSTC-remove-OLR_850_spatial_circulation.nc", "c")
     filedimdef(fout,"time",-1,True)
 ;
     fout->rc_u = rc_u
@@ -132,6 +134,6 @@ begin
     ;;; Set file attribute
     setfileoption(fout,"DefineMode",True)
     fAtt = True
-    fAtt@description = "Create on 4/May/2024. This file include regression from u/v/w to the LSTC index."
+    fAtt@description = "Create on 6/May/2024. This file include regression from u/v/w to the LSTC index at 850 hPa spatial pattern."
     fileattdef(fout,fAtt)
 end

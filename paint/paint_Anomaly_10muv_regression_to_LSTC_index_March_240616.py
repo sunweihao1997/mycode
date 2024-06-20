@@ -75,11 +75,11 @@ def paint_picture(lon, lat, u, v, psl):
 
 
     # 范围设置
-    lonmin,lonmax,latmin,latmax  =  45,150,-10,30
+    lonmin,lonmax,latmin,latmax  =  45,130,-10,22.5
     extent     =  [lonmin,lonmax,latmin,latmax]
 
     # 刻度设置
-    set_cartopy_tick(ax=ax,extent=extent,xticks=np.linspace(50,110,4,dtype=int),yticks=np.linspace(-10,30,5,dtype=int),nx=1,ny=1,labelsize=19)
+    set_cartopy_tick(ax=ax,extent=extent,xticks=np.linspace(50,130,5,dtype=int),yticks=np.linspace(-10,30,5,dtype=int),nx=1,ny=1,labelsize=19)
     
     # 绘制赤道线
     ax.plot([40,120],[0,0],'--',color='k')
@@ -93,7 +93,7 @@ def paint_picture(lon, lat, u, v, psl):
     # 绘制矢量图
     q  =  ax.quiver(lon, lat, u, v, 
                 regrid_shape=15, angles='uv',   # regrid_shape这个参数越小，是两门就越稀疏
-                scale_units='xy', scale=0.35,        # scale是参考矢量，所以取得越大画出来的箭头就越短
+                scale_units='xy', scale=0.3,        # scale是参考矢量，所以取得越大画出来的箭头就越短
                 units='xy', width=0.3,
                 transform=proj,
                 color='k',linewidth=1.2,headlength = 5, headaxislength = 4, headwidth = 5)
@@ -110,7 +110,7 @@ def paint_picture(lon, lat, u, v, psl):
     cb.ax.tick_params(labelsize=20)
 
     # 保存图片
-    save_fig(path_out="/home/sun/paint/monthly_variable/regression/",file_out="April_10m_uv_to_OLR_index.pdf")
+    save_fig(path_out="/home/sun/paint/monthly_variable/regression/",file_out="March_10m_uv_to_LSTC_index.pdf")
 
 def main():
     f1 = xr.open_dataset('/home/sun/data/monsoon_onset_anomaly_analysis/ERA5_data_monsoon_onset/regression/ERA5_regression_10uv_psl_to_LSTC.nc')
