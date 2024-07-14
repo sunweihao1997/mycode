@@ -53,7 +53,7 @@ def paint_composite_wind_sensible_precip(lat_era5, lon_era5, lat_trmm, lon_trmm,
 
     # 2.2 Set the figure
     proj    =  ccrs.PlateCarree()
-    fig1    =  plt.figure(figsize=(35,18))
+    fig1    =  plt.figure(figsize=(40,18))
     spec1   =  fig1.add_gridspec(nrows=2,ncols=5) #First row climate, second early, third late
 
     # 2.3 Plot the picture
@@ -64,7 +64,7 @@ def paint_composite_wind_sensible_precip(lat_era5, lon_era5, lat_trmm, lon_trmm,
         ax = fig1.add_subplot(spec1[t, col], projection=proj)
 
         # Tick setting
-        set_cartopy_tick(ax=ax,extent=extent,xticks=np.linspace(50,110,4,dtype=int),yticks=np.linspace(-10,30,5,dtype=int),nx=1,ny=1,labelsize=22)
+        set_cartopy_tick(ax=ax,extent=extent,xticks=np.linspace(50,110,4,dtype=int),yticks=np.linspace(-10,30,5,dtype=int),nx=1,ny=1,labelsize=20)
 
         # Equator line
         ax.plot([40,120],[0,0],'k--')
@@ -73,18 +73,19 @@ def paint_composite_wind_sensible_precip(lat_era5, lon_era5, lat_trmm, lon_trmm,
         #im1  =  ax.contour(lon_era5, lat_era5, -1 * sshf[t][j] / 86400 * 24, np.linspace(10,30,5), colors='red', linewidths=1.5)
 
         # Shading for precipitation
-        im2  =  ax.contourf(lon_trmm, lat_trmm, precip[t][j], np.linspace(1, 5, 9), cmap=newcmp, alpha=1, extend='both')
+        #im2  =  ax.contourf(lon_trmm, lat_trmm, precip[t][j], np.linspace(0.5, 4.5, 9), cmap=newcmp, alpha=1,)
+        im2  =  ax.contourf(lon_era5, lat_era5, -1 * sshf[t][j] / 86400 * 24, np.linspace(10, 25, 7), cmap='Reds', alpha=1,extend='max')
 
         # Coast Line
         ax.coastlines(resolution='110m', lw=1.75)
 
         # Vector Map
-        q  =  ax.quiver(lon_era5, lat_era5, u[t][j], v[t][j], 
-            regrid_shape=15, angles='uv',   # regrid_shape这个参数越小，是两门就越稀疏
-            scale_units='xy', scale=1.1,        # scale是参考矢量，所以取得越大画出来的箭头就越短
-            units='xy', width=0.25,
-            transform=proj,
-            color='k',linewidth=1.2,headlength = 5, headaxislength = 4, headwidth = 5,alpha=0.8)
+        #q  =  ax.quiver(lon_era5, lat_era5, u[t][j], v[t][j], 
+        #    regrid_shape=15, angles='uv',   # regrid_shape这个参数越小，是两门就越稀疏
+        #    scale_units='xy', scale=0.9,        # scale是参考矢量，所以取得越大画出来的箭头就越短
+        #    units='xy', width=0.35,
+        #    transform=proj,
+        #    color='k',linewidth=1.2,headlength = 5, headaxislength = 4, headwidth = 5,alpha=0.8)
 
         # Add title of day
         ax.set_title(fig_number1[j], loc='left', fontsize=25)
@@ -94,7 +95,7 @@ def paint_composite_wind_sensible_precip(lat_era5, lon_era5, lat_trmm, lon_trmm,
         # ax.set_title("("+number[j]+")",loc='left',fontsize=27.5)
 
         # Add legend of the vector
-        add_vector_legend(ax=ax,q=q, speed=5)
+        #add_vector_legend(ax=ax,q=q, speed=5)
 
         j+=1
 
@@ -105,7 +106,7 @@ def paint_composite_wind_sensible_precip(lat_era5, lon_era5, lat_trmm, lon_trmm,
         ax = fig1.add_subplot(spec1[t, col], projection=proj)
 
         # Tick setting
-        set_cartopy_tick(ax=ax,extent=extent,xticks=np.linspace(50,110,4,dtype=int),yticks=np.linspace(-10,30,5,dtype=int),nx=1,ny=1,labelsize=22)
+        set_cartopy_tick(ax=ax,extent=extent,xticks=np.linspace(50,110,4,dtype=int),yticks=np.linspace(-10,30,5,dtype=int),nx=1,ny=1,labelsize=20)
 
         # Equator line
         ax.plot([40,120],[0,0],'k--')
@@ -114,18 +115,19 @@ def paint_composite_wind_sensible_precip(lat_era5, lon_era5, lat_trmm, lon_trmm,
         #im1  =  ax.contour(lon_era5, lat_era5, -1 * sshf[t][j] / 86400 * 24, np.linspace(10,28,7), colors='red',)
 
         # Shading for precipitation
-        im2  =  ax.contourf(lon_trmm, lat_trmm, precip[t][j], np.linspace(0.5, 4, 8), cmap=newcmp, alpha=1, extend='both')
+        #im2  =  ax.contourf(lon_trmm, lat_trmm, precip[t][j], np.linspace(0.5, 4.5, 9), cmap=newcmp, alpha=1,)
+        im3  =  ax.contourf(lon_era5, lat_era5, -1 * sshf[t][j] / 86400 * 24, np.linspace(12, 25, 7), cmap='Reds', alpha=1,extend='max')
 
         # Coast Line
         ax.coastlines(resolution='110m', lw=1.75)
 
         # Vector Map
-        q  =  ax.quiver(lon_era5, lat_era5, u[t][j], v[t][j], 
-            regrid_shape=15, angles='uv',   # regrid_shape这个参数越小，是两门就越稀疏
-            scale_units='xy', scale=1.1,        # scale是参考矢量，所以取得越大画出来的箭头就越短
-            units='xy', width=0.25,
-            transform=proj,
-            color='k',linewidth=1.2,headlength = 5, headaxislength = 4, headwidth = 5,alpha=0.8)
+        #q  =  ax.quiver(lon_era5, lat_era5, u[t][j], v[t][j], 
+        #    regrid_shape=15, angles='uv',   # regrid_shape这个参数越小，是两门就越稀疏
+        #    scale_units='xy', scale=0.9,        # scale是参考矢量，所以取得越大画出来的箭头就越短
+        #    units='xy', width=0.35,
+        #    transform=proj,
+        #    color='k',linewidth=1.2,headlength = 5, headaxislength = 4, headwidth = 5,alpha=0.8)
 
         # Add title of day
         ax.set_title(fig_number2[j], loc='left', fontsize=25)
@@ -135,7 +137,7 @@ def paint_composite_wind_sensible_precip(lat_era5, lon_era5, lat_trmm, lon_trmm,
         # ax.set_title("("+number[j]+")",loc='left',fontsize=27.5)
 
         # Add legend of the vector
-        add_vector_legend(ax=ax,q=q, speed=5)
+        #add_vector_legend(ax=ax,q=q, speed=5)
 
         j+=1
 
@@ -146,7 +148,7 @@ def paint_composite_wind_sensible_precip(lat_era5, lon_era5, lat_trmm, lon_trmm,
     cb  =  fig1.colorbar(im2, cax=cbar_ax, shrink=0.1, pad=0.01, orientation='horizontal')
     cb.ax.tick_params(labelsize=25)
 
-    plt.savefig('/home/sun/paint/lunwen/anomoly_analysis/v0_fig1_v2_climate_early_late_circulation_evolve_10mwind_pr_sshf_test.pdf')
+    plt.savefig('/home/sun/paint/phd/phd_C5_fig4_v0_climate_early_late_circulation_sshf.pdf')
 # ============================================================================
 
 # =================== 
@@ -170,12 +172,13 @@ f_precip = 'trmm_composite_1998_2019_onset_climate_early_late_year.nc'
 
 # === SSHF file name ===
 f_sshf = ['sshf_composite.nc', 'sshf_composite_year_early.nc', 'sshf_composite_year_late.nc']
+f_slhf = ['slhf_composite.nc', 'slhf_composite_year_early.nc', 'slhf_composite_year_late.nc']
 
 # === Mask file name ===
 mask_file  =  xr.open_dataset('/home/sun/data/mask/ERA5_land_sea_mask_1x1.nc')
 
 # === Set time to paint ===
-select_time = [-15, -10, -6, -3, 0]
+select_time = np.array([-15, -10, -5, -0, 5])
 number =  ["a","b","c","d","e"]
 
 ## # === Interpolate TRMM data to lower spatial resolution ===
@@ -195,38 +198,48 @@ def main():
     # === Here I would like to combine all three type together and deliver to the plot function ===
     # --- Combine the data ---
     # TRMM data
-    trmm = xr.open_dataset(p_precip + f_precip).sel(composite_day = select_time)
+    #trmm = xr.open_dataset(p_precip + f_precip).sel(composite_day = select_time)
 
     # UV wind
-    uwind_c = xr.open_dataset(path1 + f_uwind[0]).sel(time = select_time)
-    uwind_e = xr.open_dataset(path1 + f_uwind[1]).sel(time = select_time)
-    uwind_l = xr.open_dataset(path1 + f_uwind[2]).sel(time = select_time)
-    vwind_c = xr.open_dataset(path1 + f_vwind[0]).sel(time = select_time)
-    vwind_e = xr.open_dataset(path1 + f_vwind[1]).sel(time = select_time)
-    vwind_l = xr.open_dataset(path1 + f_vwind[2]).sel(time = select_time)
+    uwind_c = xr.open_dataset(path1 + f_uwind[0]).sel(lat=slice(5, 0), lon=slice(80, 100))
+    uwind_e = xr.open_dataset(path1 + f_uwind[1]).sel(lat=slice(5, 0), lon=slice(80, 100))
+    uwind_l = xr.open_dataset(path1 + f_uwind[2]).sel(lat=slice(5, 0), lon=slice(80, 100))
 
     #SSHF
-    sshf_c = xr.open_dataset(path1 + f_sshf[0]).sel(time = select_time)
-    sshf_e = xr.open_dataset(path1 + f_sshf[1]).sel(time = select_time)
-    sshf_l = xr.open_dataset(path1 + f_sshf[2]).sel(time = select_time)
+    sshf_c = xr.open_dataset(path1 + f_sshf[0]).sel(lat=slice(5, 0), lon=slice(80, 100))
+    sshf_e = xr.open_dataset(path1 + f_sshf[1]).sel(lat=slice(5, 0), lon=slice(80, 100))
+    sshf_l = xr.open_dataset(path1 + f_sshf[2]).sel(lat=slice(5, 0), lon=slice(80, 100))
+
+    #SLHF
+    slhf_c = xr.open_dataset(path1 + f_slhf[0]).sel(lat=slice(5, 0), lon=slice(80, 100))
+    slhf_e = xr.open_dataset(path1 + f_slhf[1]).sel(lat=slice(5, 0), lon=slice(80, 100))
+    slhf_l = xr.open_dataset(path1 + f_slhf[2]).sel(lat=slice(5, 0), lon=slice(80, 100))
 
     # band-pass OLR
-    olr_f  = xr.open_dataset("/home/sun/data/composite/early_late_composite/ERA5_precipitation_bandpass_3080_early_late_composite.nc").sel(time_composite=select_time)
+    olr_f  = xr.open_dataset("/home/sun/data/composite/early_late_composite/ERA5_OLR_bandpass_early_late_composite.nc").sel(lat=slice(15, 5), lon=slice(70, 90))
 
+    #print(uwind_e)
+    #print(np.average(np.average(uwind_e['u10'], axis=1), axis=1))
+    u_series  = np.average(np.average(uwind_l['u10'], axis=1), axis=1)
+    sf_series = np.average( np.average(sshf_l['sshf']/-86400*24, axis=1), axis=1)
+    lf_series = np.average( np.average(slhf_l['slhf']/-86400*24, axis=1), axis=1)
+    p_series = np.average(np.average(olr_f['olr_early']*86400*24, axis=1), axis=1)
+    print(lf_series)
+    fig, ax1 = plt.subplots(figsize=(20, 10))
+    ax1.plot(lf_series, color='b')
+    ax1.set_ylim((90, 180))
+    #ax1.tick_params(axis='y', labelcolor=color)
 
-    #trmm_combined  = [trmm['trmm_climate'].data, trmm['trmm_early'].data, trmm['trmm_late'].data]
-    olr_combined   = [olr_f['tp_early'].data, olr_f['tp_late'].data]
-    uwind_combined = [uwind_e['u10'].data, uwind_l['u10'].data]
-    vwind_combined = [vwind_e['v10'].data, vwind_l['v10'].data]
-    sshf_combined  = [sshf_e['sshf'].data, sshf_l['sshf'].data]
+    ax2 = ax1.twinx()
+    ax2.plot(sf_series, color='r')
+    ax2.set_ylim((10, 25))
 
-    lonmin,lonmax,latmin,latmax  =  45,115,-10,30
-    extent     =  [lonmin,lonmax,latmin,latmax]
+    ax3 = ax1.twinx()
+    ax3.spines['right'].set_position(('outward', 60))
+    ax3.plot(u_series, color='k')
+    ax3.set_ylim((0, 5))
 
-    # Deliver parameter to the plot function
-    paint_composite_wind_sensible_precip(lat_era5=uwind_c['lat'].data, lon_era5=uwind_c['lon'].data, lat_trmm=olr_f['lat'].data, lon_trmm=olr_f['lon'].data, u=uwind_combined, v=vwind_combined,
-                                         sshf=sshf_combined, precip=olr_combined, extent=extent)
-
+    plt.savefig('lf_sf_late.png')
 
 
 if __name__ == '__main__':

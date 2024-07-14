@@ -13,8 +13,8 @@ onset_day_file = xr.open_dataset("/home/sun/data/monsoon_onset_anomaly_analysis/
 onset_day_file_42 = onset_day_file.sel(year=slice(1980, 2021)) #42 years
 
 # data about OLR
-olr_bandpass_file = xr.open_dataset("/home/sun/data/monsoon_onset_anomaly_analysis/process/ERA5_BOB_tp_bandpass_filter_30_80.nc").sel(lat=slice(15, 5), lon=slice(85, 95))
-olr_bandpass_file2= xr.open_dataset("/home/sun/data/monsoon_onset_anomaly_analysis/process/ERA5_BOB_tp_bandpass_filter_30_80.nc").sel(lat=slice(15, 5), lon=slice(80, 90))
+olr_bandpass_file = xr.open_dataset("/home/sun/data/monsoon_onset_anomaly_analysis/process/ERA5_BOB_tp_bandpass_filter_30_80.nc").sel(lat=slice(20, 10), lon=slice(85, 95))
+olr_bandpass_file2= xr.open_dataset("/home/sun/data/monsoon_onset_anomaly_analysis/process/ERA5_BOB_tp_bandpass_filter_30_80.nc").sel(lat=slice(15, 10), lon=slice(80, 88))
 #print(olr_bandpass_file)
 
 # ========================================
@@ -126,7 +126,7 @@ def plot_bandpass_olr(filter_avg, filter_std, time, day_notation):
     ax0.legend(loc='upper left', fontsize=20)
     #plt.xticks(rotation=45)
 
-    plt.savefig("/home/sun/paint/monsoon_onset_composite_ERA5/BOB_tp_evolution.pdf")
+    plt.savefig("/home/sun/paint/phd/phd_C5_fig1c_v0_filtered_tp_timeseries.pdf")
 
 def acquire_time():
     import datetime
@@ -188,7 +188,7 @@ if __name__ == '__main__':
 #    # Send to plot function
     time_axis = acquire_time()
 
-    frq1 = 8 ; frq2 = 20 ; frq3 = 80
+    frq1 = 8 ; frq2 = 40 ; frq3 = 80
     plot_bandpass_olr([olr_early, olr_late, olr_origin], [olr_early_all, olr_late_all, olr_origin_all], time_axis, [onset_day_avg_e, onset_day_avg_l+1])
 
    
